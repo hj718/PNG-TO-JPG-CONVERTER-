@@ -1,0 +1,510 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PNG2JPG - Free Online Image Tools</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">PNG<span>2</span>JPG</div>
+    <nav>
+      <button id="darkModeToggle">🌙</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="banner">
+      <h1>Free Online Image Tools</h1>
+      <p>Convert, Compress, Resize, and Crop your images instantly.</p>
+    </section>
+
+    <!-- PNG to JPG -->
+    <section class="tool">
+      <h2>PNG to JPG Converter</h2>
+      <input type="file" id="pngUpload" accept="image/png" multiple>
+      <input type="range" id="qualitySlider" min="0.1" max="1" step="0.1" value="0.8">
+      <label for="qualitySlider">Quality</label>
+      <button id="convertBtn">Convert</button>
+      <div id="previewContainer"></div>
+    </section>
+
+    <!-- Compress -->
+    <section class="tool">
+      <h2>Compress Image</h2>
+      <input type="file" id="compressUpload" accept="image/*">
+      <input type="range" id="compressSlider" min="0.1" max="1" step="0.1" value="0.7">
+      <label for="compressSlider">Compression Level</label>
+      <button id="compressBtn">Compress</button>
+      <div id="compressPreview"></div>
+    </section>
+
+    <!-- Resize -->
+    <section class="tool">
+      <h2>Resize Image</h2>
+      <input type="file" id="resizeUpload" accept="image/*">
+      <label>Width: <input type="number" id="resizeWidth"></label>
+      <label>Height: <input type="number" id="resizeHeight"></label>
+      <select id="resizeUnit">
+        <option value="px">Pixels</option>
+        <option value="cm">Centimeters</option>
+        <option value="inch">Inches</option>
+      </select>
+      <select id="resizePreset">
+        <option value="">--Preset--</option>
+        <option value="800x600">800x600</option>
+        <option value="1024x768">1024x768</option>
+        <option value="1920x1080">1920x1080</option>
+      </select>
+      <button id="resizeBtn">Resize</button>
+      <div id="resizePreview"></div>
+    </section>
+
+    <!-- Crop -->
+    <section class="tool">
+      <h2>Crop Image</h2>
+      <input type="file" id="cropUpload" accept="image/*">
+      <button id="cropBtn">Crop</button>
+      <div id="cropPreview"></div>
+    </section>
+
+    <!-- Feedback -->
+    <section class="tool feedback">
+      <h2>Feedback & Comments</h2>
+      <form action="mailto:harshitjaiswal00010@gmail.com" method="POST" enctype="text/plain">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+        <label for="feedback">Your Feedback</label>
+        <textarea id="feedback" name="feedback" rows="4" placeholder="Write your feedback here..." required></textarea>
+
+        <button type="submit">Send Feedback</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 PNG2JPG. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html><style>/* ======================
+   Reset & Base
+   ====================== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height: 100%; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: #f7f9fc;
+  color: #222;
+  line-height: 1.5;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ======================
+   Header
+   ====================== */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: linear-gradient(90deg,#0d6efd,#20c0ff);
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(13,110,253,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo { font-weight: 700; font-size: 1.15rem; }
+.logo span { color: #ffd54a; margin-left: 2px; }
+
+/* theme toggle button */
+#darkModeToggle {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* ======================
+   Banner
+   ====================== */
+.banner {
+  padding: 28px 18px;
+  text-align: center;
+  background: linear-gradient(180deg,#e9f5ff00,#fff0);
+}
+.banner h1 { font-size: 1.6rem; color:#0b57c7; margin-bottom:6px; }
+.banner p { color:#334455; max-width:820px; margin:0 auto; }
+
+/* ======================
+   Layout / Tools container
+   ====================== */
+main { padding: 18px; max-width: 1100px; margin: 0 auto; }
+
+/* tool card */
+.tool {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 18px auto;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.04);
+  max-width: 720px;
+}
+
+/* headings */
+.tool h2 {
+  color: #0b57c7;
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+}
+
+/* form controls inside tool */
+.tool input[type="file"] {
+  display: block;
+  margin: 8px 0 12px 0;
+}
+.tool input[type="range"],
+.tool input[type="number"],
+.tool select,
+.tool button,
+.tool input[type="text"],
+.tool textarea {
+  width: 100%;
+  max-width: 420px;
+  padding: 8px 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #d7dce6;
+  background: #fff;
+  font-size: 0.95rem;
+}
+
+/* buttons */
+.tool button {
+  max-width: 220px;
+  padding: 10px 14px;
+  background: linear-gradient(90deg,#0d6efd,#20c0ff);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(13,110,253,0.12);
+}
+.tool button:hover { transform: translateY(-2px); }
+
+/* preview sections */
+#previewContainer,
+#compressPreview,
+#resizePreview,
+#cropPreview {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+/* images in preview */
+#previewContainer img,
+#compressPreview img,
+#resizePreview img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #e6eef8;
+  object-fit: contain;
+}
+
+/* file info and suggestion styles */
+.file-info { font-size: 0.88rem; color: #556; margin-top: 6px; }
+.suggestion { font-size: 0.9rem; color: #0b57c7; font-style: italic; margin-top:6px; }
+
+/* crop canvas styling */
+#cropPreview canvas {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid #dfe8f8;
+  touch-action: none; /* allow pointer dragging on mobile */
+}
+
+/* feedback form */
+.feedback {
+  margin-top: 12px;
+  max-width: 720px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.04);
+}
+.feedback label { font-weight:600; margin-top:8px; display:block; }
+.feedback input, .feedback textarea {
+  width: 100%;
+  max-width: 520px;
+}
+
+/* footer */
+footer {
+  text-align: center;
+  padding: 18px;
+  margin-top: 20px;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+/* ======================
+   Dark mode styles
+   ====================== */
+body.dark {
+  background: #0f1720;
+  color: #e6eef8;
+}
+body.dark .tool { background: #121417; box-shadow: none; border: 1px solid rgba(255,255,255,0.03); }
+body.dark .banner h1 { color: #cfe9ff; }
+body.dark .tool h2 { color: #7fb6ff; }
+body.dark input, body.dark select, body.dark textarea {
+  background: #15181b;
+  color: #e6eef8;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+body.dark .file-info { color: #bcd7ff; }
+body.dark .suggestion { color: #7fb6ff; }
+body.dark footer { background: transparent; color: #cbd6e8; }
+
+/* ======================
+   Responsive tweaks
+   ====================== */
+@media (max-width: 720px) {
+  .tool { padding: 14px; margin: 12px; }
+  .banner { padding: 20px 12px; }
+  .tool input[type="range"], .tool select, .tool button { max-width: 100%; }
+  header { padding: 10px 12px; }
+}</style><script>/* ======================
+   Dark Mode Toggle
+   ====================== */
+document.getElementById("darkModeToggle").addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+});
+
+/* ======================
+   Helper Functions
+   ====================== */
+function formatFileSize(bytes) {
+  if (bytes < 1024) return bytes + " B";
+  else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+  else return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+}
+
+function showInfo(file, container, tip) {
+  const img = new Image();
+  img.onload = () => {
+    const p = document.createElement("p");
+    p.className = "file-info";
+    p.textContent = `File: ${file.name} | Size: ${formatFileSize(file.size)} | ${img.width}x${img.height}px`;
+    container.appendChild(p);
+
+    if (tip) {
+      const sug = document.createElement("p");
+      sug.className = "suggestion";
+      sug.textContent = tip;
+      container.appendChild(sug);
+    }
+  };
+  img.src = URL.createObjectURL(file);
+}
+
+/* ======================
+   PNG → JPG Converter
+   ====================== */
+const pngUpload = document.getElementById("pngUpload");
+const convertBtn = document.getElementById("convertBtn");
+const previewContainer = document.getElementById("previewContainer");
+const qualitySlider = document.getElementById("qualitySlider");
+
+pngUpload.addEventListener("change", () => {
+  previewContainer.innerHTML = "";
+  [...pngUpload.files].forEach(file => {
+    if (!file.type.includes("png")) return;
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+    previewContainer.appendChild(img);
+    showInfo(file, previewContainer, "JPG is lighter than PNG, good for photos.");
+  });
+});
+
+convertBtn.addEventListener("click", () => {
+  [...pngUpload.files].forEach(file => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      canvas.getContext("2d").drawImage(img, 0, 0);
+      const link = document.createElement("a");
+      link.download = file.name.replace(".png", ".jpg");
+      link.href = canvas.toDataURL("image/jpeg", qualitySlider.value);
+      link.textContent = "Download " + link.download;
+      previewContainer.appendChild(link);
+    };
+    img.src = URL.createObjectURL(file);
+  });
+});
+
+/* ======================
+   Compress Tool
+   ====================== */
+const compressUpload = document.getElementById("compressUpload");
+const compressSlider = document.getElementById("compressSlider");
+const compressBtn = document.getElementById("compressBtn");
+const compressPreview = document.getElementById("compressPreview");
+
+compressUpload.addEventListener("change", () => {
+  compressPreview.innerHTML = "";
+  [...compressUpload.files].forEach(file => {
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+    compressPreview.appendChild(img);
+    showInfo(file, compressPreview, "Compressing helps faster sharing.");
+  });
+});
+
+compressBtn.addEventListener("click", () => {
+  [...compressUpload.files].forEach(file => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      canvas.getContext("2d").drawImage(img, 0, 0);
+      const link = document.createElement("a");
+      link.download = "compressed-" + file.name;
+      link.href = canvas.toDataURL("image/jpeg", compressSlider.value);
+      link.textContent = "Download " + link.download;
+      compressPreview.appendChild(link);
+    };
+    img.src = URL.createObjectURL(file);
+  });
+});
+
+/* ======================
+   Resize Tool
+   ====================== */
+const resizeUpload = document.getElementById("resizeUpload");
+const resizeWidth = document.getElementById("resizeWidth");
+const resizeHeight = document.getElementById("resizeHeight");
+const resizeUnit = document.getElementById("resizeUnit");
+const resizePreset = document.getElementById("resizePreset");
+const resizeBtn = document.getElementById("resizeBtn");
+const resizePreview = document.getElementById("resizePreview");
+
+resizeUpload.addEventListener("change", () => {
+  resizePreview.innerHTML = "";
+  [...resizeUpload.files].forEach(file => {
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    resizePreview.appendChild(img);
+    showInfo(file, resizePreview, "Resize for web, social, or print.");
+  });
+});
+
+resizePreset.addEventListener("change", e => {
+  if (!e.target.value) return;
+  const [w,h] = e.target.value.split("x");
+  resizeWidth.value = w; resizeHeight.value = h;
+});
+
+resizeBtn.addEventListener("click", () => {
+  const file = resizeUpload.files[0];
+  if (!file) return;
+  const img = new Image();
+  img.onload = () => {
+    let w = parseFloat(resizeWidth.value) || img.width;
+    let h = parseFloat(resizeHeight.value) || img.height;
+
+    if (resizeUnit.value === "cm") { w *= 37.8; h *= 37.8; }
+    if (resizeUnit.value === "inch") { w *= 96; h *= 96; }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = w; canvas.height = h;
+    canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+    const link = document.createElement("a");
+    link.download = "resized-" + file.name;
+    link.href = canvas.toDataURL("image/jpeg", 0.9);
+    link.textContent = "Download " + link.download;
+    resizePreview.appendChild(link);
+  };
+  img.src = URL.createObjectURL(file);
+});
+
+/* ======================
+   Crop Tool (Fixed)
+   ====================== */
+const cropUpload = document.getElementById("cropUpload");
+const cropBtn = document.getElementById("cropBtn");
+const cropPreview = document.getElementById("cropPreview");
+
+let cropImg, cropCanvas, cropCtx;
+let isDrawing = false, startX, startY, endX, endY;
+
+cropUpload.addEventListener("change", e => {
+  cropPreview.innerHTML = "";
+  cropCanvas = document.createElement("canvas");
+  cropCtx = cropCanvas.getContext("2d");
+  cropPreview.appendChild(cropCanvas);
+
+  cropImg = new Image();
+  cropImg.onload = () => {
+    const maxW = 400;
+    const scale = cropImg.width > maxW ? maxW / cropImg.width : 1;
+    cropCanvas.width = cropImg.width * scale;
+    cropCanvas.height = cropImg.height * scale;
+    cropCanvas.dataset.scale = scale;
+    cropCtx.drawImage(cropImg, 0, 0, cropCanvas.width, cropCanvas.height);
+  };
+  cropImg.src = URL.createObjectURL(e.target.files[0]);
+
+  cropCanvas.onmousedown = ev => {
+    isDrawing = true;
+    startX = ev.offsetX; startY = ev.offsetY;
+  };
+  cropCanvas.onmousemove = ev => {
+    if (!isDrawing) return;
+    endX = ev.offsetX; endY = ev.offsetY;
+    cropCtx.drawImage(cropImg, 0, 0, cropCanvas.width, cropCanvas.height);
+    cropCtx.strokeStyle = "red";
+    cropCtx.lineWidth = 2;
+    cropCtx.strokeRect(startX, startY, endX - startX, endY - startY);
+  };
+  cropCanvas.onmouseup = () => { isDrawing = false; };
+});
+
+cropBtn.addEventListener("click", () => {
+  if (startX == null || endX == null) return alert("Select an area first!");
+  const scale = 1 / cropCanvas.dataset.scale;
+  const selW = (endX - startX) * scale;
+  const selH = (endY - startY) * scale;
+  const selX = startX * scale;
+  const selY = startY * scale;
+
+  const c = document.createElement("canvas");
+  c.width = Math.abs(selW);
+  c.height = Math.abs(selH);
+  c.getContext("2d").drawImage(
+    cropImg,
+    selX, selY, selW, selH,
+    0, 0, c.width, c.height
+  );
+
+  const a = document.createElement("a");
+  a.download = "cropped.jpg";
+  a.href = c.toDataURL("image/jpeg", 1);
+  a.textContent = "Download Cropped Image";
+  cropPreview.appendChild(c);
+  cropPreview.appendChild(a);
+});</script>
