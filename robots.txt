@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hj718.github.io/png-to-jpg/sitemap.xml
